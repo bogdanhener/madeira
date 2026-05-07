@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -33,8 +34,10 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="theme-color" content="#080a12" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="bg-[#080a12] overflow-hidden font-sans antialiased">
+        <ServiceWorkerRegister />
         {children}
       </body>
     </html>

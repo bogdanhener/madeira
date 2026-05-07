@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { Location } from '@/data/locations';
 import LocationDrawer from '@/components/LocationDrawer';
+import WeatherWidget from '@/components/WeatherWidget';
 
 const MadeiraMap = dynamic(() => import('@/components/MadeiraMap'), {
   ssr: false,
@@ -44,6 +45,7 @@ export default function Home() {
         location={selectedLocation}
         onClose={() => setSelectedLocation(null)}
       />
+      <WeatherWidget isModalOpen={!!selectedLocation} />
     </main>
   );
 }
