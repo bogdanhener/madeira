@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ─────────────────────────────────────────────── */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background: #080a12;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ─── Pin animations ────────────────────────────────────── */
+@keyframes pinPulse {
+  0%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.55);
+    opacity: 0.12;
+  }
+}
+
+/* ─── Leaflet overrides ─────────────────────────────────── */
+.leaflet-container {
+  background: #080a12 !important;
+  font-family: var(--font-inter), system-ui, sans-serif !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(8, 10, 18, 0.65) !important;
+  color: rgba(255, 255, 255, 0.28) !important;
+  font-size: 9px !important;
+  padding: 3px 7px !important;
+  border-radius: 7px 0 0 0 !important;
+  backdrop-filter: blur(8px) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.leaflet-control-attribution a {
+  color: rgba(255, 255, 255, 0.38) !important;
+  text-decoration: none;
+}
+
+.leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-tile-container,
+.leaflet-map-pane,
+.leaflet-overlay-pane,
+.leaflet-shadow-pane,
+.leaflet-marker-pane,
+.leaflet-popup-pane {
+  -webkit-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 99px;
+}
+
+/* Hide horizontal scrollbars in card rows */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
