@@ -15,7 +15,7 @@ interface LocationDrawerProps {
 const mapsSearch = (q: string) =>
   `https://www.google.com/maps/search/${encodeURIComponent(q)}`;
 const mapsCoords = (lat: number, lng: number) =>
-  `https://www.google.com/maps/@${lat},${lng},15z`;
+  `https://www.google.com/maps/@${lat},${lng},18z`;
 
 function ExternalIcon() {
   return (
