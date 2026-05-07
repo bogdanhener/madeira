@@ -62,18 +62,16 @@ function ModalContent({ location, onClose }: { location: Location; onClose: () =
         onClick={onClose}
       />
 
-      {/* Modal — full width with side margins, floating above bottom edge */}
+      {/* Modal — left/right anchored so no transform conflicts with Framer Motion */}
       <motion.div
         key={`modal-${location.id}`}
         style={{
           position: 'fixed',
           bottom: '12px',
-          left: '50%',
-          width: 'calc(100% - 28px)',
-          maxWidth: '560px',
+          left: '14px',
+          right: '14px',
           maxHeight: '84vh',
           zIndex: 99999,
-          transform: 'translateX(-50%)',
           background: 'rgba(12, 14, 24, 0.98)',
           backdropFilter: 'blur(32px)',
           WebkitBackdropFilter: 'blur(32px)',
