@@ -302,4 +302,35 @@ export const locations: Location[] = [
     ],
     tips: ['The summit section is exposed and can be windy — check the forecast before setting out','Trail markers are red and yellow — follow carefully at the ridge junctions','Go early to have the panoramic viewpoint to yourself before day-trippers arrive'],
   },
+  {
+    id: 'veu-da-noiva', name: 'Véu da Noiva',
+    coordinates: [32.8198, -17.1075], category: 'nature',
+    duration: '30–60 min', difficulty: 'easy', pinColor: '#74b9ff',
+    description: 'The "Bridal Veil" — a spectacular waterfall on the north coast that cascades hundreds of meters down sheer basalt cliffs directly onto the ER101 coastal road. One of the most dramatic and photogenic natural sights in Madeira.',
+    attractions: ['Waterfall plunging onto the coastal road','Natural rock pool and mist at the base','Dramatic basalt cliff backdrop','Viewpoint platform on the road'],
+    food: [
+      { name: 'Cafés in Seixal', description: 'Small local cafes a short drive east in Seixal village', type: 'Local Café' },
+    ],
+    nightlife: [],
+    gettingThere: [
+      { mode: 'car', info: 'On the ER101 north coast road, between Seixal and Ribeira da Janela — roadside stop' },
+      { mode: 'bus', info: 'Rodoeste line 6 north coast bus stops here on request' },
+    ],
+    tips: ['Stop the car and walk right under the waterfall — it is completely safe and magical','Most powerful after heavy rain — the flow multiplies dramatically','Combine with Seixal black sand beach just 2km east for a perfect half-day'],
+  },
+  {
+    id: 'miradouro-juncal', name: 'Miradouro do Juncal',
+    coordinates: [32.8430, -17.1270], category: 'viewpoint',
+    duration: '30–60 min', difficulty: 'easy', pinColor: '#fd79a8',
+    description: 'A dramatic clifftop viewpoint on the rugged northwest coast with sweeping views over the Atlantic, the terraced valleys of Porto Moniz, and the volcanic coastline stretching east toward Seixal. Often completely deserted — a true hidden viewpoint.',
+    attractions: ['Panoramic Atlantic ocean views','Dramatic northwest coast cliffscape','Terraced valley and vineyard panorama','Peaceful and almost always uncrowded'],
+    food: [
+      { name: 'Restaurants in Porto Moniz', description: 'Excellent seafood restaurants by the volcanic pools just 5km away', type: 'Seafood' },
+    ],
+    nightlife: [],
+    gettingThere: [
+      { mode: 'car', info: 'Car essential — follow signs from Porto Moniz toward Juncal on the ER101 north coast road' },
+    ],
+    tips: ['Visit at sunset for extraordinary golden light over the Atlantic','Almost never appears in guidebooks — you will likely have it entirely to yourself','Combine with Porto Moniz volcanic pools for a perfect northwest coast afternoon'],
+  },
 ];

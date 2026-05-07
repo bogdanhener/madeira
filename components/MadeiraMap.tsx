@@ -2,7 +2,7 @@
 
 import 'leaflet/dist/leaflet.css';
 import { useMemo, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, CircleMarker, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polyline, CircleMarker, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { Location, locations, MADEIRA_CENTER, DEFAULT_ZOOM } from '@/data/locations';
 
@@ -117,9 +117,10 @@ export default function MadeiraMap({
       center={MADEIRA_CENTER}
       zoom={DEFAULT_ZOOM}
       style={{ width: '100%', height: '100%' }}
-      zoomControl={true}
+      zoomControl={false}
       attributionControl={true}
     >
+      <ZoomControl position="bottomleft" />
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
