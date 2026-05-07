@@ -153,7 +153,7 @@ export const locations: Location[] = [
   },
   {
     id: 'ponta-sao-lourenco', name: 'Ponta de São Lourenço',
-    coordinates: [32.7512, -16.7004], category: 'nature',
+    coordinates: [32.7397, -16.7255], category: 'nature',
     duration: '3–4 hours', difficulty: 'moderate', pinColor: '#E55039',
     description: "A dramatic limestone peninsula thrusting into the Atlantic at Madeira's eastern tip. Rust-red and ochre cliffs plunge sheer into deep blue sea in a landscape unlike anywhere else on the island.",
     attractions: ['PR8 peninsula hiking trail (7.6km)','Baía de Abra starting viewpoint','Endemic flora and migratory birds','Double-sided sea views from the spine'],
@@ -208,7 +208,7 @@ export const locations: Location[] = [
   },
   {
     id: 'boca-do-risco', name: 'Boca do Risco',
-    coordinates: [32.7382, -16.7183], category: 'hidden_gem',
+    coordinates: [32.7654, -16.7540], category: 'hidden_gem',
     duration: '3–4 hours', difficulty: 'hard', pinColor: '#FDCB6E',
     description: "A dramatic and largely unknown coastal trail east of Machico, rewarding hikers with jaw-dropping views of sheer sea cliffs, hidden coves, and wild Atlantic. Practically invisible on tourist maps — a genuine local secret.",
     attractions: ['Sheer cliffside trail with unbroken Atlantic panoramas','Hidden sea caves and coves far below','Wild goats grazing on cliff edges','Connection to Ponta de São Lourenço (PR8)'],
@@ -257,7 +257,7 @@ export const locations: Location[] = [
   },
   {
     id: 'cascata-anjos', name: 'Cascata dos Anjos',
-    coordinates: [32.8165, -17.0945], category: 'hidden_gem',
+    coordinates: [32.8152, -17.0872], category: 'hidden_gem',
     duration: '30–60 min', difficulty: 'easy', pinColor: '#74b9ff',
     description: "A beautiful roadside waterfall on the north coast near Seixal, where water cascades directly over the coastal road — drivers pass through a curtain of water. A uniquely Madeiran spectacle that surprises every visitor who discovers it.",
     attractions: ['Waterfall that flows directly over the coastal road','Natural pool at the base for cooling off','Scenic north coast backdrop','Photo opportunity unlike anywhere else in Europe'],
@@ -273,7 +273,7 @@ export const locations: Location[] = [
   },
   {
     id: 'adrenaline-porto-moniz', name: 'Adrenaline Adventures',
-    coordinates: [32.8610, -17.1580], category: 'hidden_gem',
+    coordinates: [32.8550, -17.1480], category: 'hidden_gem',
     duration: 'Half day', difficulty: 'hard', pinColor: '#fd79a8',
     description: "Madeira's premier adventure sports base in Porto Moniz, offering coasteering, cliff jumping, canyoning, and sea kayaking in the dramatic volcanic coastline. The wildest way to experience the island's raw geology up close.",
     attractions: ['Coasteering along volcanic sea cliffs','Cliff jumping into Atlantic coves','Canyoning through lava rock gorges','Sea kayaking around lava arches'],
@@ -288,7 +288,7 @@ export const locations: Location[] = [
   },
   {
     id: 'pr17-pinaculo', name: 'PR17 Pináculo',
-    coordinates: [32.7720, -17.0540], category: 'nature',
+    coordinates: [32.7530, -17.0390], category: 'nature',
     duration: '3–4 hours', difficulty: 'moderate', pinColor: '#a29bfe',
     description: "A spectacular circular hiking trail in the Serra de Água valley that climbs to the Pináculo — a dramatic volcanic pinnacle with panoramic views over Madeira's central mountain ridge, deep ravines, and the distant Atlantic on both north and south coasts.",
     attractions: ['Pináculo volcanic pinnacle viewpoint','Panoramic dual-coast mountain views','Ancient levada irrigation channels','Endemic laurisilva forest sections'],
