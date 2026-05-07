@@ -62,26 +62,25 @@ function ModalContent({ location, onClose }: { location: Location; onClose: () =
         onClick={onClose}
       />
 
-      {/* Modal — full width, centered, bottom-anchored */}
+      {/* Modal — full width with side margins, floating above bottom edge */}
       <motion.div
         key={`modal-${location.id}`}
         style={{
           position: 'fixed',
-          bottom: 0,
+          bottom: '12px',
           left: '50%',
-          width: '100%',
-          maxWidth: '480px',
+          width: 'calc(100% - 28px)',
+          maxWidth: '560px',
           maxHeight: '84vh',
           zIndex: 99999,
           transform: 'translateX(-50%)',
           background: 'rgba(12, 14, 24, 0.98)',
           backdropFilter: 'blur(32px)',
           WebkitBackdropFilter: 'blur(32px)',
-          borderRadius: '28px 28px 0 0',
-          borderTop: '1px solid rgba(255,255,255,0.1)',
-          borderLeft: '1px solid rgba(255,255,255,0.07)',
-          borderRight: '1px solid rgba(255,255,255,0.07)',
+          borderRadius: '28px',
+          border: '1px solid rgba(255,255,255,0.1)',
           overflow: 'hidden',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
         }}
         initial={{ y: '100%' }}
         animate={{ y: 0 }}

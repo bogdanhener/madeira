@@ -3,7 +3,6 @@
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { Location } from '@/data/locations';
-import FloatingHeader from '@/components/FloatingHeader';
 import LocationDrawer from '@/components/LocationDrawer';
 
 const MadeiraMap = dynamic(() => import('@/components/MadeiraMap'), {
@@ -41,7 +40,6 @@ export default function Home() {
         onLocationSelect={setSelectedLocation}
         selectedLocation={selectedLocation}
       />
-      <FloatingHeader />
       <LocationDrawer
         location={selectedLocation}
         onClose={() => setSelectedLocation(null)}
