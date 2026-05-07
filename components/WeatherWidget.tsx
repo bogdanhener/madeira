@@ -48,44 +48,48 @@ function WidgetContent({ isModalOpen }: { isModalOpen: boolean }) {
       .catch(() => {});
   }, []);
 
+  if (isModalOpen) return null;
+
   return (
-    <AnimatePresence>
-      {weather && !isModalOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -10, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -10, scale: 0.95 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-          style={{
-            position: 'fixed',
-            top: 'max(16px, env(safe-area-inset-top))',
-            right: '14px',
-            zIndex: 99996,
-            background: 'rgba(8, 10, 18, 0.82)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '16px',
-            padding: '10px 14px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-            pointerEvents: 'none',
-          }}
-        >
-          <span style={{ fontSize: '22px', lineHeight: 1 }}>{weatherEmoji(weather.code)}</span>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-            <span style={{ fontSize: '15px', fontWeight: 700, color: '#fff', lineHeight: 1 }}>
-              {weather.temp}°C
-            </span>
-            <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', lineHeight: 1 }}>
-              {weatherLabel(weather.code)} · {weather.wind} km/h
-            </span>
-          </div>
-        </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: weather ? 1 : 0.4, y: 0 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      style={{
+        position: 'fixed',
+        top: 'max(14px, env(safe-area-inset-top))',
+        left: 'calc(50% + 4px)',
+        right: '14px',
+        zIndex: 99996,
+        background: 'rgba(8,10,18,0.88)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255,255,255,0.12)',
+        borderRadius: '18px',
+        padding: '10px 14px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '8px',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.35)',
+        pointerEvents: 'none',
+      }}
+    >
+      <span style={{ fontSize: '18px', lineHeight: 1, flexShrink: 0 }}>
+        {weather ? weatherEmoji(weather.code) : '—'}
+      </span>
+      <span style={{ fontSize: '14px', fontWeight: 700, color: '#fff', flexShrink: 0 }}>
+        {weather ? `${weather.temp}°C` : '…'}
+      </span>
+      {weather && (
+        <>
+          <span style={{ width: '1px', height: '14px', background: 'rgba(255,255,255,0.15)', flexShrink: 0 }} />
+          <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.42)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {weatherLabel(weather.code)} · {weather.wind} km/h
+          </span>
+        </>
       )}
-    </AnimatePresence>
+    </motion.div>
   );
 }
 

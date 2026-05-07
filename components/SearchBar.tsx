@@ -53,7 +53,7 @@ function SearchContent({ onSelect, isModalOpen }: SearchBarProps) {
         position: 'fixed',
         top: 'max(14px, env(safe-area-inset-top))',
         left: '14px',
-        right: '14px',
+        right: 'calc(50% + 4px)',
         zIndex: 99996,
       }}
     >

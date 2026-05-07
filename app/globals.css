@@ -48,6 +48,15 @@ body {
 }
 
 
+/* ─── Zoom controls — aligned with right-side buttons ──── */
+.leaflet-bottom.leaflet-left {
+  bottom: 110px !important;
+}
+.leaflet-bottom.leaflet-left .leaflet-control-zoom {
+  margin-left: 14px !important;
+  margin-bottom: 0 !important;
+}
+
 .leaflet-div-icon {
   background: transparent !important;
   border: none !important;
