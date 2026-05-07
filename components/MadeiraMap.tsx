@@ -9,54 +9,16 @@ import { Location, locations, MADEIRA_CENTER, DEFAULT_ZOOM } from '@/data/locati
 function createPinIcon(color: string, isSelected: boolean): L.DivIcon {
   const outerSize = isSelected ? 72 : 60;
   const dotSize = isSelected ? 20 : 16;
-  const glowColor = color + '60';
-  const pulseColor = color + '30';
 
   return L.divIcon({
     className: '',
+    // pointer-events:none on decorative children so clicks reach the Leaflet marker layer
     html: `
-      <div style="
-        position:relative;
-        width:${outerSize}px;
-        height:${outerSize}px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-      ">
-        <div style="
-          position:absolute;
-          width:100%;
-          height:100%;
-          background:${pulseColor};
-          border-radius:50%;
-          animation:pinPulse 2.8s ease-in-out infinite;
-        "></div>
-        <div style="
-          position:absolute;
-          width:${outerSize * 0.6}px;
-          height:${outerSize * 0.6}px;
-          background:${color}45;
-          border-radius:50%;
-          animation:pinPulse 2.8s ease-in-out infinite 0.4s;
-        "></div>
-        <div style="
-          position:relative;
-          width:${dotSize + 10}px;
-          height:${dotSize + 10}px;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-        ">
-          <div style="
-            width:${dotSize}px;
-            height:${dotSize}px;
-            background:${color};
-            border-radius:50% 50% 50% 0;
-            transform:rotate(-45deg);
-            border:2.5px solid rgba(255,255,255,0.95);
-            box-shadow:0 3px 16px ${glowColor}, 0 1px 6px rgba(0,0,0,0.6);
-            ${isSelected ? `filter:brightness(1.25) drop-shadow(0 0 10px ${color});` : ''}
-          "></div>
+      <div style="position:relative;width:${outerSize}px;height:${outerSize}px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+        <div style="position:absolute;width:100%;height:100%;background:${color}30;border-radius:50%;animation:pinPulse 2.8s ease-in-out infinite;pointer-events:none;"></div>
+        <div style="position:absolute;width:${outerSize * 0.6}px;height:${outerSize * 0.6}px;background:${color}45;border-radius:50%;animation:pinPulse 2.8s ease-in-out infinite 0.4s;pointer-events:none;"></div>
+        <div style="position:relative;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+          <div style="width:${dotSize}px;height:${dotSize}px;background:${color};border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2.5px solid rgba(255,255,255,0.95);box-shadow:0 3px 16px ${color}60,0 1px 6px rgba(0,0,0,0.6);${isSelected ? `filter:brightness(1.25) drop-shadow(0 0 10px ${color});` : ''}"></div>
         </div>
       </div>
     `,
@@ -116,11 +78,11 @@ export default function MadeiraMap({ onLocationSelect, selectedLocation }: Madei
       center={MADEIRA_CENTER}
       zoom={DEFAULT_ZOOM}
       style={{ width: '100%', height: '100%' }}
-      zoomControl={false}
+      zoomControl={true}
       attributionControl={true}
     >
       <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
         maxZoom={19}
         subdomains="abcd"

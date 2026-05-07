@@ -41,21 +41,19 @@ export default function LocationDrawer({ location, onClose }: LocationDrawerProp
   return (
     <AnimatePresence>
       {location && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            key="backdrop"
-            className="fixed inset-0 z-40"
-            style={{ background: 'rgba(0,0,0,0.45)' }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            onClick={onClose}
-          />
-
-          {/* Drawer */}
-          <motion.div
+        <motion.div
+          key="backdrop"
+          className="fixed inset-0 z-40"
+          style={{ background: 'rgba(0,0,0,0.45)' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          onClick={onClose}
+        />
+      )}
+      {location && (
+        <motion.div
             key={`drawer-${location.id}`}
             className="fixed bottom-0 left-0 right-0 z-50 rounded-t-[28px] overflow-hidden"
             style={{
@@ -256,7 +254,6 @@ export default function LocationDrawer({ location, onClose }: LocationDrawerProp
               </div>
             </div>
           </motion.div>
-        </>
       )}
     </AnimatePresence>
   );

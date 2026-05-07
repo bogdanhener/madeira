@@ -7,7 +7,7 @@ export default function FloatingHeader() {
   return (
     <motion.header
       className="fixed top-0 left-0 right-0 z-30 px-4"
-      style={{ paddingTop: 'max(12px, env(safe-area-inset-top))' }}
+      style={{ paddingTop: 'max(12px, env(safe-area-inset-top))', pointerEvents: 'none' }}
       initial={{ y: -30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.4, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -15,6 +15,7 @@ export default function FloatingHeader() {
       <div
         className="flex items-center justify-between rounded-2xl px-4 py-3"
         style={{
+          pointerEvents: 'auto',
           background: 'rgba(8, 10, 18, 0.72)',
           backdropFilter: 'blur(22px)',
           WebkitBackdropFilter: 'blur(22px)',
