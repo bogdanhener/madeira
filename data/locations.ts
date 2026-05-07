@@ -273,7 +273,7 @@ export const locations: Location[] = [
   },
   {
     id: 'adrenaline-porto-moniz', name: 'Adrenaline Adventures',
-    coordinates: [32.8550, -17.1480], category: 'hidden_gem',
+    coordinates: [32.85681524501812, -17.157321228836484], category: 'hidden_gem',
     duration: 'Half day', difficulty: 'hard', pinColor: '#fd79a8',
     description: "Madeira's premier adventure sports base in Porto Moniz, offering coasteering, cliff jumping, canyoning, and sea kayaking in the dramatic volcanic coastline. The wildest way to experience the island's raw geology up close.",
     attractions: ['Coasteering along volcanic sea cliffs','Cliff jumping into Atlantic coves','Canyoning through lava rock gorges','Sea kayaking around lava arches'],
