@@ -10,6 +10,22 @@ interface LocationDrawerProps {
   onClose: () => void;
 }
 
+function mapsSearch(query: string) {
+  return `https://www.google.com/maps/search/${encodeURIComponent(query)}`;
+}
+
+function mapsCoords(lat: number, lng: number) {
+  return `https://www.google.com/maps/@${lat},${lng},15z`;
+}
+
+function ExternalIcon() {
+  return (
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ display: 'inline', marginLeft: '3px', verticalAlign: 'middle' }}>
+      <path d="M1 9L9 1M9 1H4M9 1V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function CloseIcon() {
   return (
     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -22,21 +38,23 @@ function SectionHeader({ emoji, label }: { emoji: string; label: string }) {
   return (
     <div className="flex items-center gap-2 mb-3">
       <span className="text-base leading-none">{emoji}</span>
-      <h3 className="text-[10px] font-semibold tracking-[0.18em] text-white/35 uppercase">{label}</h3>
+      <h3 className="text-[10px] font-semibold tracking-[0.18em] uppercase" style={{ color: 'rgba(255,255,255,0.32)' }}>
+        {label}
+      </h3>
     </div>
   );
 }
 
 function ModalContent({ location, onClose }: { location: Location; onClose: () => void }) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [lat, lng] = location.coordinates;
 
   return (
     <>
-      {/* Backdrop — rendered into body so it's always on top */}
+      {/* Backdrop */}
       <motion.div
         key="modal-backdrop"
-        className="fixed inset-0"
-        style={{ background: 'rgba(0,0,0,0.55)', zIndex: 99998 }}
+        style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 99998 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -44,80 +62,118 @@ function ModalContent({ location, onClose }: { location: Location; onClose: () =
         onClick={onClose}
       />
 
-      {/* Modal card */}
+      {/* Modal — full width, centered, bottom-anchored */}
       <motion.div
         key={`modal-${location.id}`}
-        className="fixed left-0 right-0 bottom-0 mx-auto rounded-t-[28px] overflow-hidden"
         style={{
-          zIndex: 99999,
+          position: 'fixed',
+          bottom: 0,
+          left: '50%',
+          width: '100%',
           maxWidth: '480px',
-          maxHeight: '82vh',
+          maxHeight: '84vh',
+          zIndex: 99999,
+          transform: 'translateX(-50%)',
           background: 'rgba(12, 14, 24, 0.98)',
           backdropFilter: 'blur(32px)',
           WebkitBackdropFilter: 'blur(32px)',
-          borderTop: '1px solid rgba(255,255,255,0.09)',
-          borderLeft: '1px solid rgba(255,255,255,0.06)',
-          borderRight: '1px solid rgba(255,255,255,0.06)',
-          left: '50%',
-          transform: 'translateX(-50%)',
+          borderRadius: '28px 28px 0 0',
+          borderTop: '1px solid rgba(255,255,255,0.1)',
+          borderLeft: '1px solid rgba(255,255,255,0.07)',
+          borderRight: '1px solid rgba(255,255,255,0.07)',
+          overflow: 'hidden',
         }}
-        initial={{ y: '100%', opacity: 0.8 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: '100%', opacity: 0.8 }}
+        initial={{ y: '100%' }}
+        animate={{ y: 0 }}
+        exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 32, stiffness: 260, mass: 0.8 }}
       >
         {/* Colored gradient wash */}
         <div
           style={{
             position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '150px',
+            top: 0, left: 0, right: 0,
+            height: '160px',
             background: `linear-gradient(180deg, ${location.pinColor}22 0%, transparent 100%)`,
             pointerEvents: 'none',
           }}
         />
 
         {/* Drag handle */}
-        <div className="flex justify-center pt-3 pb-1">
-          <div className="w-9 h-[3px] rounded-full bg-white/20" />
+        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '12px', paddingBottom: '4px' }}>
+          <div style={{ width: '36px', height: '3px', borderRadius: '99px', background: 'rgba(255,255,255,0.2)' }} />
         </div>
 
         {/* Header */}
-        <div className="flex items-start justify-between px-5 pt-2 pb-4 relative">
-          <div className="flex-1 pr-3">
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', padding: '8px 20px 16px', position: 'relative' }}>
+          <div style={{ flex: 1, paddingRight: '12px' }}>
+            {/* Category badge */}
             <div
-              className="inline-flex items-center gap-1.5 px-2.5 py-[5px] rounded-full text-[10px] font-bold tracking-[0.14em] mb-2"
               style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '5px 10px',
+                borderRadius: '99px',
                 background: `${location.pinColor}20`,
                 color: location.pinColor,
                 border: `1px solid ${location.pinColor}38`,
+                fontSize: '10px',
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                marginBottom: '8px',
               }}
             >
-              <span
-                style={{
-                  width: '5px',
-                  height: '5px',
-                  borderRadius: '50%',
-                  background: location.pinColor,
-                  display: 'inline-block',
-                  flexShrink: 0,
-                }}
-              />
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: location.pinColor, flexShrink: 0 }} />
               {CATEGORY_LABELS[location.category].toUpperCase()}
             </div>
-            <h2 className="text-[26px] font-bold text-white leading-[1.1] tracking-[-0.02em]">
+
+            {/* Title */}
+            <h2 style={{ fontSize: '28px', fontWeight: 800, color: '#fff', lineHeight: 1.1, letterSpacing: '-0.02em', margin: 0 }}>
               {location.name}
             </h2>
+
+            {/* Google Maps link */}
+            <a
+              href={mapsCoords(lat, lng)}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                marginTop: '8px',
+                fontSize: '11.5px',
+                fontWeight: 600,
+                color: location.pinColor,
+                textDecoration: 'none',
+                padding: '5px 10px',
+                borderRadius: '99px',
+                background: `${location.pinColor}18`,
+                border: `1px solid ${location.pinColor}30`,
+              }}
+            >
+              📍 Open in Google Maps
+              <ExternalIcon />
+            </a>
           </div>
 
+          {/* Close button */}
           <button
             onClick={onClose}
-            className="flex items-center justify-center w-9 h-9 rounded-full text-white/50 hover:text-white/90 active:scale-95 transition-all mt-1 flex-shrink-0"
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
               background: 'rgba(255,255,255,0.09)',
               border: '1px solid rgba(255,255,255,0.12)',
+              color: 'rgba(255,255,255,0.55)',
+              cursor: 'pointer',
+              flexShrink: 0,
+              marginTop: '4px',
             }}
           >
             <CloseIcon />
@@ -125,51 +181,82 @@ function ModalContent({ location, onClose }: { location: Location; onClose: () =
         </div>
 
         {/* Divider */}
-        <div className="mx-5 h-px bg-white/[0.07]" />
+        <div style={{ height: '1px', background: 'rgba(255,255,255,0.07)', margin: '0 20px' }} />
 
         {/* Scrollable content */}
         <div
           ref={scrollRef}
-          className="overflow-y-auto overscroll-contain pb-10"
-          style={{ maxHeight: 'calc(82vh - 148px)' }}
+          style={{ overflowY: 'auto', maxHeight: 'calc(84vh - 170px)', overscrollBehavior: 'contain' }}
         >
-          <div className="px-5 pt-4 space-y-5">
+          <div style={{ padding: '16px 20px 40px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
             {/* Description */}
-            <p className="text-[13.5px] text-white/55 leading-[1.65]">{location.description}</p>
+            <p style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, margin: 0 }}>
+              {location.description}
+            </p>
 
             {/* Highlights */}
             <section>
               <SectionHeader emoji="🏛" label="Highlights" />
-              <ul className="space-y-[9px]">
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {location.attractions.map((attr, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-[13px] text-white/75 leading-[1.5]">
-                    <span className="mt-[5px] flex-shrink-0 text-[8px]" style={{ color: location.pinColor }}>
-                      ●
-                    </span>
-                    {attr}
+                  <li key={i}>
+                    <a
+                      href={mapsSearch(`${attr} ${location.name} Madeira`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '10px',
+                        fontSize: '13px',
+                        color: 'rgba(255,255,255,0.78)',
+                        textDecoration: 'none',
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      <span style={{ color: location.pinColor, marginTop: '5px', flexShrink: 0, fontSize: '8px' }}>●</span>
+                      <span>
+                        {attr}
+                        <ExternalIcon />
+                      </span>
+                    </a>
                   </li>
                 ))}
               </ul>
             </section>
 
-            <div className="h-px bg-white/[0.07]" />
+            <div style={{ height: '1px', background: 'rgba(255,255,255,0.07)' }} />
 
             {/* Food */}
             <section>
               <SectionHeader emoji="🍽" label="Food & Dining" />
-              <div className="flex gap-2.5 overflow-x-auto pb-2 -mx-5 px-5 scrollbar-hide">
+              <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', marginLeft: '-20px', marginRight: '-20px', padding: '0 20px 8px' }}>
                 {location.food.map((item, i) => (
-                  <div
+                  <a
                     key={i}
-                    className="flex-shrink-0 w-44 rounded-2xl p-3.5"
+                    href={mapsSearch(`${item.name} ${location.name} Madeira`)}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
+                      flexShrink: 0,
+                      width: '172px',
+                      borderRadius: '16px',
+                      padding: '14px',
                       background: 'rgba(255,255,255,0.04)',
                       border: '1px solid rgba(255,255,255,0.07)',
+                      textDecoration: 'none',
+                      display: 'block',
                     }}
                   >
                     <span
-                      className="inline-block text-[10px] font-semibold px-2 py-[3px] rounded-full mb-2"
                       style={{
+                        display: 'inline-block',
+                        fontSize: '10px',
+                        fontWeight: 700,
+                        padding: '3px 8px',
+                        borderRadius: '99px',
+                        marginBottom: '8px',
                         background: `${location.pinColor}1C`,
                         color: location.pinColor,
                         border: `1px solid ${location.pinColor}2A`,
@@ -177,9 +264,13 @@ function ModalContent({ location, onClose }: { location: Location; onClose: () =
                     >
                       {item.type}
                     </span>
-                    <p className="text-[13px] font-semibold text-white mb-1 leading-tight">{item.name}</p>
-                    <p className="text-[11.5px] text-white/45 leading-[1.5] line-clamp-3">{item.description}</p>
-                  </div>
+                    <p style={{ fontSize: '13px', fontWeight: 600, color: '#fff', margin: '0 0 4px', lineHeight: 1.3 }}>
+                      {item.name} <ExternalIcon />
+                    </p>
+                    <p style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.42)', lineHeight: 1.5, margin: 0, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {item.description}
+                    </p>
+                  </a>
                 ))}
               </div>
             </section>
@@ -188,19 +279,32 @@ function ModalContent({ location, onClose }: { location: Location; onClose: () =
             {location.nightlife.length > 0 && (
               <section>
                 <SectionHeader emoji="🍸" label="Bars & Nightlife" />
-                <div className="flex gap-2.5 overflow-x-auto pb-2 -mx-5 px-5 scrollbar-hide">
+                <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', marginLeft: '-20px', marginRight: '-20px', padding: '0 20px 8px' }}>
                   {location.nightlife.map((item, i) => (
-                    <div
+                    <a
                       key={i}
-                      className="flex-shrink-0 w-44 rounded-2xl p-3.5"
+                      href={mapsSearch(`${item.name} ${location.name} Madeira`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       style={{
+                        flexShrink: 0,
+                        width: '172px',
+                        borderRadius: '16px',
+                        padding: '14px',
                         background: 'rgba(255,255,255,0.04)',
                         border: '1px solid rgba(255,255,255,0.07)',
+                        textDecoration: 'none',
+                        display: 'block',
                       }}
                     >
                       <span
-                        className="inline-block text-[10px] font-semibold px-2 py-[3px] rounded-full mb-2"
                         style={{
+                          display: 'inline-block',
+                          fontSize: '10px',
+                          fontWeight: 700,
+                          padding: '3px 8px',
+                          borderRadius: '99px',
+                          marginBottom: '8px',
                           background: `${location.pinColor}1C`,
                           color: location.pinColor,
                           border: `1px solid ${location.pinColor}2A`,
@@ -208,9 +312,13 @@ function ModalContent({ location, onClose }: { location: Location; onClose: () =
                       >
                         {item.type}
                       </span>
-                      <p className="text-[13px] font-semibold text-white mb-1 leading-tight">{item.name}</p>
-                      <p className="text-[11.5px] text-white/45 leading-[1.5] line-clamp-3">{item.description}</p>
-                    </div>
+                      <p style={{ fontSize: '13px', fontWeight: 600, color: '#fff', margin: '0 0 4px', lineHeight: 1.3 }}>
+                        {item.name} <ExternalIcon />
+                      </p>
+                      <p style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.42)', lineHeight: 1.5, margin: 0, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                        {item.description}
+                      </p>
+                    </a>
                   ))}
                 </div>
               </section>
@@ -220,17 +328,24 @@ function ModalContent({ location, onClose }: { location: Location; onClose: () =
             {location.tips && location.tips.length > 0 && (
               <section>
                 <SectionHeader emoji="💡" label="Travel Tips" />
-                <ul className="space-y-2">
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {location.tips.map((tip, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-3 text-[13px] text-white/65 leading-[1.55] rounded-xl p-3"
                       style={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '12px',
+                        fontSize: '13px',
+                        color: 'rgba(255,255,255,0.65)',
+                        lineHeight: 1.55,
+                        padding: '12px',
+                        borderRadius: '12px',
                         background: 'rgba(255,255,255,0.03)',
                         border: '1px solid rgba(255,255,255,0.06)',
                       }}
                     >
-                      <span className="flex-shrink-0 mt-[2px] text-[11px] font-bold" style={{ color: location.pinColor }}>
+                      <span style={{ flexShrink: 0, marginTop: '2px', fontSize: '11px', fontWeight: 700, color: location.pinColor }}>
                         →
                       </span>
                       {tip}
@@ -239,6 +354,7 @@ function ModalContent({ location, onClose }: { location: Location; onClose: () =
                 </ul>
               </section>
             )}
+
           </div>
         </div>
       </motion.div>
@@ -248,11 +364,7 @@ function ModalContent({ location, onClose }: { location: Location; onClose: () =
 
 export default function LocationDrawer({ location, onClose }: LocationDrawerProps) {
   const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+  useEffect(() => { setMounted(true); }, []);
   if (!mounted) return null;
 
   return createPortal(
