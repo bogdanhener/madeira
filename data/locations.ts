@@ -186,7 +186,7 @@ export const locations: Location[] = [
   // ── Hidden Gems ──────────────────────────────────────────
   {
     id: 'fanal', name: 'Fanal Forest',
-    coordinates: [32.8456, -17.1102], category: 'hidden_gem',
+    coordinates: [32.7998, -17.0852], category: 'hidden_gem',
     duration: '1–2 hours', difficulty: 'easy', pinColor: '#FDCB6E',
     description: 'A hauntingly beautiful ancient laurisilva forest in the Paul da Serra plateau, where thousand-year-old til and laurel trees emerge from dense Atlantic fog. One of the most magical places in all of Madeira — and almost unknown to tourists.',
     attractions: ['Ancient laurisilva forest (UNESCO World Heritage)','Fog-shrouded thousand-year-old til trees','PR13 Levada dos Cedros trail','Endemic Madeiran chaffinch and laurel pigeons'],
@@ -219,5 +219,87 @@ export const locations: Location[] = [
       { mode: 'walk', info: '45 min walk from Porto da Cruz along the old coastal path to the trailhead' },
     ],
     tips: ['Do NOT attempt in wet or windy weather — cliff paths become dangerously slippery','Carry 2L+ of water — there are absolutely no facilities along the entire route','Connects to Ponta de São Lourenço for a legendary full-day coastal epic'],
+  },
+
+  // ── New pins ─────────────────────────────────────────────
+  {
+    id: 'botanical-garden', name: 'Botanical Garden',
+    coordinates: [32.6617, -16.8980], category: 'nature',
+    duration: '2–3 hours', difficulty: 'easy', pinColor: '#00b894',
+    description: 'The Jardim Botânico da Madeira sits on the hillside above Funchal, showcasing over 2,500 exotic and endemic plant species across terraced gardens with sweeping views over the capital and the bay.',
+    attractions: ['2,500+ exotic and endemic plant species','Natural History Museum on site','Parrot enclosure and tropical bird aviaries','Panoramic views over Funchal bay'],
+    food: [
+      { name: 'Garden Café', description: 'Light lunches and coffee with views over the terraced gardens', type: 'Café' },
+    ],
+    nightlife: [],
+    gettingThere: [
+      { mode: 'cable_car', info: 'Cable car from the Old Town (Zona Velha) goes directly to the garden entrance' },
+      { mode: 'taxi', info: '10 min taxi from central Funchal' },
+      { mode: 'bus', info: 'Bus 29 or 31 from central Funchal stops near the garden' },
+    ],
+    tips: ['Combine with the Monte cable car for a perfect half-day loop from Funchal','Arrive early — it gets busy by mid-morning during peak season','The garden is built on a steep hillside — wear comfortable shoes'],
+  },
+  {
+    id: 'seixal-beach', name: 'Seixal Black Sand Beach',
+    coordinates: [32.8190, -17.1030], category: 'beach',
+    duration: '2–3 hours', difficulty: 'easy', pinColor: '#636e72',
+    description: 'A dramatic black volcanic sand beach on the wild north coast, framed by towering basalt cliffs and a natural freshwater waterfall that tumbles directly onto the shore. One of the most visually striking beaches in all of Portugal.',
+    attractions: ['Black volcanic sand unique to the north coast','Natural freshwater waterfall onto the beach','Crystal-clear Atlantic swimming','Dramatic basalt cliff backdrop'],
+    food: [
+      { name: 'Restaurante Beira Mar', description: 'Fresh seafood and local dishes steps from the black sand', type: 'Seafood' },
+    ],
+    nightlife: [],
+    gettingThere: [
+      { mode: 'car', info: '1.5 hours from Funchal via the north coast road (ER101)' },
+      { mode: 'bus', info: 'Rodoeste line 6 runs along the north coast through Seixal' },
+    ],
+    tips: ['The waterfall at the end of the beach is a natural fresh-water shower — use it','Waves on the north coast can be powerful — check conditions before swimming','Combine with Porto Moniz volcanic pools just 8km further west'],
+  },
+  {
+    id: 'cascata-anjos', name: 'Cascata dos Anjos',
+    coordinates: [32.8165, -17.0945], category: 'hidden_gem',
+    duration: '30–60 min', difficulty: 'easy', pinColor: '#74b9ff',
+    description: "A beautiful roadside waterfall on the north coast near Seixal, where water cascades directly over the coastal road — drivers pass through a curtain of water. A uniquely Madeiran spectacle that surprises every visitor who discovers it.",
+    attractions: ['Waterfall that flows directly over the coastal road','Natural pool at the base for cooling off','Scenic north coast backdrop','Photo opportunity unlike anywhere else in Europe'],
+    food: [
+      { name: 'Local Snack Bars in Seixal', description: 'Small local cafes and snack bars a short drive away in Seixal village', type: 'Local Café' },
+    ],
+    nightlife: [],
+    gettingThere: [
+      { mode: 'car', info: 'On the ER101 north coast road between Seixal and Ribeira da Janela — roadside stop' },
+      { mode: 'bus', info: 'Any north coast bus on the Rodoeste line 6 passes directly through it' },
+    ],
+    tips: ['Roll down your windows as you drive through — or stop and walk under it','Most impressive after heavy rain when the flow is strongest','Combine with Seixal black sand beach just 1km east'],
+  },
+  {
+    id: 'adrenaline-porto-moniz', name: 'Adrenaline Adventures',
+    coordinates: [32.8610, -17.1580], category: 'hidden_gem',
+    duration: 'Half day', difficulty: 'hard', pinColor: '#fd79a8',
+    description: "Madeira's premier adventure sports base in Porto Moniz, offering coasteering, cliff jumping, canyoning, and sea kayaking in the dramatic volcanic coastline. The wildest way to experience the island's raw geology up close.",
+    attractions: ['Coasteering along volcanic sea cliffs','Cliff jumping into Atlantic coves','Canyoning through lava rock gorges','Sea kayaking around lava arches'],
+    food: [
+      { name: 'Porto Moniz Restaurants', description: 'Post-adventure refuel at the seafood restaurants by the volcanic pools', type: 'Seafood' },
+    ],
+    nightlife: [],
+    gettingThere: [
+      { mode: 'car', info: '1.5 hours from Funchal via ER101 north coast road to Porto Moniz' },
+    ],
+    tips: ['Book in advance — group sizes are limited for safety reasons','All equipment is provided — just bring swimwear and a sense of adventure','Not suitable for non-swimmers or those with heart conditions'],
+  },
+  {
+    id: 'pr17-pinaculo', name: 'PR17 Pináculo',
+    coordinates: [32.7720, -17.0540], category: 'nature',
+    duration: '3–4 hours', difficulty: 'moderate', pinColor: '#a29bfe',
+    description: "A spectacular circular hiking trail in the Serra de Água valley that climbs to the Pináculo — a dramatic volcanic pinnacle with panoramic views over Madeira's central mountain ridge, deep ravines, and the distant Atlantic on both north and south coasts.",
+    attractions: ['Pináculo volcanic pinnacle viewpoint','Panoramic dual-coast mountain views','Ancient levada irrigation channels','Endemic laurisilva forest sections'],
+    food: [
+      { name: 'Restaurante O Virgílio', description: 'Traditional Madeiran food in Serra de Água village at the trailhead', type: 'Traditional' },
+    ],
+    nightlife: [],
+    gettingThere: [
+      { mode: 'car', info: 'Start from Serra de Água village — 40 min from Funchal via ER228 through the mountains' },
+      { mode: 'bus', info: 'SAM bus service to Serra de Água from Funchal, then walk to trailhead' },
+    ],
+    tips: ['The summit section is exposed and can be windy — check the forecast before setting out','Trail markers are red and yellow — follow carefully at the ridge junctions','Go early to have the panoramic viewpoint to yourself before day-trippers arrive'],
   },
 ];
