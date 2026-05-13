@@ -13,6 +13,9 @@ interface MapControlsProps {
   onGPSRequest: () => void;
   gpsLoading: boolean;
   gpsActive: boolean;
+  currentUser: string | null;
+  currentUserColor: string;
+  onLogout: () => void;
 }
 
 function buildMapsUrl(routeLocations: Location[]): string {
@@ -23,6 +26,7 @@ function buildMapsUrl(routeLocations: Location[]): string {
 
 function ControlsContent({
   isRouteMode, onToggleRoute, routeIds, onClearRoute, onGPSRequest, gpsLoading, gpsActive,
+  currentUser, currentUserColor, onLogout,
 }: MapControlsProps) {
   const routeLocations = routeIds.map(id => locations.find(l => l.id === id)).filter(Boolean) as Location[];
   const mapsUrl = buildMapsUrl(routeLocations);
@@ -104,6 +108,30 @@ function ControlsContent({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* User badge / logout */}
+      {currentUser && (
+        <button
+          onClick={onLogout}
+          title="Switch user"
+          style={{
+            display: 'flex', alignItems: 'center', gap: '6px',
+            height: '34px', padding: '0 13px',
+            borderRadius: '99px', cursor: 'pointer',
+            background: 'rgba(8,10,18,0.88)',
+            border: `1.5px solid ${currentUserColor}55`,
+            color: currentUserColor,
+            fontSize: '12px', fontWeight: 700,
+            fontFamily: 'inherit',
+            backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {currentUser}
+          <span style={{ opacity: 0.45, fontSize: '10px' }}>✕</span>
+        </button>
+      )}
 
       {/* Route toggle button */}
       <button

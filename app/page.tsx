@@ -153,6 +153,17 @@ export default function Home() {
     watchIdRef.current = id;
   }, [currentUser]);
 
+  const handleLogout = useCallback(() => {
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+      watchIdRef.current = null;
+      setUserPosition(null);
+      if (currentUser) remove(ref(db, `locations/${currentUser}`));
+    }
+    localStorage.removeItem('madeira-user');
+    setCurrentUser(null);
+  }, [currentUser]);
+
   const handleToggleRoute = useCallback(() => {
     setIsRouteMode(prev => !prev);
     setSelectedLocation(null);
@@ -185,6 +196,9 @@ export default function Home() {
         onGPSRequest={handleGPSRequest}
         gpsLoading={gpsLoading}
         gpsActive={!!userPosition}
+        currentUser={currentUser}
+        currentUserColor={currentUserColor}
+        onLogout={handleLogout}
       />
     </main>
   );
