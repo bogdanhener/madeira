@@ -5,7 +5,7 @@ import { useMemo, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { Location, locations, MADEIRA_CENTER, DEFAULT_ZOOM } from '@/data/locations';
-import { FriendPosition, ActiveRoute } from '@/app/page';
+import { FriendPosition } from '@/app/page';
 
 function createPinIcon(
   color: string,
@@ -124,13 +124,11 @@ interface MadeiraMapProps {
   currentUserColor: string;
   friendPositions: Record<string, FriendPosition>;
   onFriendClick: (name: string, pos: FriendPosition) => void;
-  activeRoute: ActiveRoute | null;
 }
 
 export default function MadeiraMap({
   onLocationSelect, selectedLocation, visitedIds, routeIds, isRouteMode,
-  userPosition, currentUserName, currentUserColor, friendPositions,
-  onFriendClick, activeRoute,
+  userPosition, currentUserName, currentUserColor, friendPositions, onFriendClick,
 }: MadeiraMapProps) {
   const routeCoords = routeIds
     .map(id => locations.find(l => l.id === id))
@@ -192,13 +190,6 @@ export default function MadeiraMap({
         />
       ))}
 
-      {/* Friend route polyline */}
-      {activeRoute && activeRoute.coordinates.length >= 2 && (
-        <Polyline
-          positions={activeRoute.coordinates}
-          pathOptions={{ color: activeRoute.color, weight: 5, opacity: 0.9, lineCap: 'round', lineJoin: 'round' }}
-        />
-      )}
 
       <MapController selectedLocation={selectedLocation} userPosition={userPosition} />
     </MapContainer>

@@ -1,6 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { db } from '@/lib/firebase';
+import { ref, onValue, off } from 'firebase/database';
 
 export const USERS: { name: string; color: string }[] = [
   { name: 'Gabi',  color: '#FF6B6B' },
@@ -14,6 +17,16 @@ interface NamePickerProps {
 }
 
 export default function NamePicker({ onSelect }: NamePickerProps) {
+  const [takenNames, setTakenNames] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const activeRef = ref(db, 'activeUsers');
+    onValue(activeRef, snapshot => {
+      setTakenNames(new Set(Object.keys(snapshot.val() ?? {})));
+    });
+    return () => off(activeRef);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -31,30 +44,38 @@ export default function NamePicker({ onSelect }: NamePickerProps) {
         <h1 style={{ color: 'white', fontSize: '22px', fontWeight: 700, margin: 0, letterSpacing: '-0.02em' }}>
           Welcome to Madeira
         </h1>
-        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px', marginTop: '8px', margin: '8px 0 0' }}>
+        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px', margin: '8px 0 0' }}>
           Who are you?
         </p>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '260px' }}>
-        {USERS.map(user => (
-          <motion.button
-            key={user.name}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => onSelect(user.name)}
-            style={{
-              padding: '16px', borderRadius: '16px', cursor: 'pointer',
-              background: `${user.color}15`,
-              border: `1.5px solid ${user.color}50`,
-              color: user.color,
-              fontSize: '17px', fontWeight: 700,
-              fontFamily: 'inherit',
-              letterSpacing: '0.01em',
-            }}
-          >
-            {user.name}
-          </motion.button>
-        ))}
+        {USERS.map(user => {
+          const taken = takenNames.has(user.name);
+          return (
+            <motion.button
+              key={user.name}
+              whileTap={taken ? {} : { scale: 0.97 }}
+              onClick={() => !taken && onSelect(user.name)}
+              style={{
+                padding: '16px', borderRadius: '16px',
+                cursor: taken ? 'not-allowed' : 'pointer',
+                background: taken ? 'rgba(255,255,255,0.04)' : `${user.color}15`,
+                border: `1.5px solid ${taken ? 'rgba(255,255,255,0.1)' : `${user.color}50`}`,
+                color: taken ? 'rgba(255,255,255,0.2)' : user.color,
+                fontSize: '17px', fontWeight: 700,
+                fontFamily: 'inherit',
+                letterSpacing: '0.01em',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+              }}
+            >
+              {user.name}
+              {taken && (
+                <span style={{ fontSize: '11px', fontWeight: 500, opacity: 0.6 }}>already online</span>
+              )}
+            </motion.button>
+          );
+        })}
       </div>
     </motion.div>
   );
