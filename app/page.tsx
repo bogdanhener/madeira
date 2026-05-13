@@ -109,28 +109,6 @@ export default function Home() {
     return () => off(locRef);
   }, [currentUser]);
 
-  // Auto-start GPS when user is known (covers returning users whose name is in localStorage)
-  useEffect(() => {
-    if (currentUser) startGPS(currentUser);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]); // intentionally run only when currentUser first becomes truthy
-
-  // Restart GPS watch whenever app comes back to the foreground
-  useEffect(() => {
-    if (!currentUser) return;
-    const onVisible = () => {
-      if (document.visibilityState === 'visible') {
-        if (watchIdRef.current !== null) {
-          navigator.geolocation.clearWatch(watchIdRef.current);
-          watchIdRef.current = null;
-        }
-        startGPS(currentUser);
-      }
-    };
-    document.addEventListener('visibilitychange', onVisible);
-    return () => document.removeEventListener('visibilitychange', onVisible);
-  }, [currentUser, startGPS]);
-
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -145,9 +123,7 @@ export default function Home() {
     const activeRef = ref(db, `activeUsers/${name}`);
     set(activeRef, true);
     onDisconnect(activeRef).remove();
-    // Start GPS immediately using the user gesture from tapping the name
-    startGPS(name);
-  }, [startGPS]);
+  }, []);
 
   const markVisited = useCallback((id: string) => {
     setVisitedIds(prev => {
