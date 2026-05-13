@@ -12,6 +12,23 @@ import { db } from '@/lib/firebase';
 import { ref, set, onValue, off, remove } from 'firebase/database';
 
 export type FriendPosition = { lat: number; lng: number; color: string };
+export type ActiveRoute = {
+  coordinates: [number, number][];
+  color: string;
+  name: string;
+  distance: number;
+  duration: number;
+};
+
+function formatDistance(m: number) {
+  return m < 1000 ? `${Math.round(m)} m` : `${(m / 1000).toFixed(1)} km`;
+}
+function formatDuration(s: number) {
+  const mins = Math.round(s / 60);
+  if (mins < 60) return `${mins} min`;
+  const h = Math.floor(mins / 60), rem = mins % 60;
+  return rem > 0 ? `${h}h ${rem}min` : `${h}h`;
+}
 
 const MadeiraMap = dynamic(() => import('@/components/MadeiraMap'), {
   ssr: false,
@@ -57,6 +74,7 @@ export default function Home() {
   const [gpsLoading, setGpsLoading]             = useState(false);
   const [currentUser, setCurrentUser]           = useState<string | null>(getStoredUser);
   const [friendPositions, setFriendPositions]   = useState<Record<string, FriendPosition>>({});
+  const [activeRoute, setActiveRoute]           = useState<ActiveRoute | null>(null);
   const watchIdRef = useRef<number | null>(null);
 
   const currentUserColor = USERS.find(u => u.name === currentUser)?.color ?? '#4285f4';
@@ -153,6 +171,30 @@ export default function Home() {
     watchIdRef.current = id;
   }, [currentUser]);
 
+  const handleFriendClick = useCallback(async (name: string, pos: FriendPosition) => {
+    if (!userPosition) {
+      setActiveRoute({ coordinates: [], color: pos.color, name, distance: -1, duration: -1 });
+      return;
+    }
+    const [fromLat, fromLng] = userPosition;
+    try {
+      const res  = await fetch(
+        `https://router.project-osrm.org/route/v1/driving/${fromLng},${fromLat};${pos.lng},${pos.lat}?overview=full&geometries=geojson`
+      );
+      const data = await res.json();
+      if (data.routes?.length) {
+        const r = data.routes[0];
+        setActiveRoute({
+          coordinates: r.geometry.coordinates.map(([lng, lat]: [number, number]) => [lat, lng] as [number, number]),
+          color: pos.color,
+          name,
+          distance: r.distance,
+          duration: r.duration,
+        });
+      }
+    } catch { /* silently ignore network errors */ }
+  }, [userPosition]);
+
   const handleLogout = useCallback(() => {
     if (watchIdRef.current !== null) {
       navigator.geolocation.clearWatch(watchIdRef.current);
@@ -184,7 +226,47 @@ export default function Home() {
         currentUserName={currentUser}
         currentUserColor={currentUserColor}
         friendPositions={friendPositions}
+        onFriendClick={handleFriendClick}
+        activeRoute={activeRoute}
       />
+
+      {/* Friend route info card */}
+      {activeRoute && (
+        <div style={{
+          position: 'fixed', bottom: '110px', left: '50%', transform: 'translateX(-50%)',
+          zIndex: 99996,
+          background: 'rgba(8,10,18,0.92)',
+          backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+          border: `1px solid ${activeRoute.color}45`,
+          borderRadius: '16px', padding: '12px 16px',
+          display: 'flex', alignItems: 'center', gap: '14px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+          minWidth: '220px',
+        }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ color: activeRoute.color, fontWeight: 700, fontSize: '14px', letterSpacing: '-0.01em' }}>
+              → {activeRoute.name}
+            </div>
+            {activeRoute.distance === -1 ? (
+              <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: '12px', marginTop: '3px' }}>
+                Enable your GPS first
+              </div>
+            ) : (
+              <div style={{ color: 'rgba(255,255,255,0.55)', fontSize: '12px', marginTop: '3px' }}>
+                {formatDistance(activeRoute.distance)} · {formatDuration(activeRoute.duration)} drive
+              </div>
+            )}
+          </div>
+          <button
+            onClick={() => setActiveRoute(null)}
+            style={{
+              background: 'rgba(255,255,255,0.08)', border: 'none', cursor: 'pointer',
+              color: 'rgba(255,255,255,0.5)', borderRadius: '99px',
+              padding: '4px 9px', fontSize: '11px', fontFamily: 'inherit',
+            }}
+          >✕</button>
+        </div>
+      )}
       <LocationDrawer location={selectedLocation} onClose={handleClose} />
       <WeatherWidget isModalOpen={!!selectedLocation} />
       <SearchBar onSelect={handleSearchSelect} isModalOpen={!!selectedLocation} />
