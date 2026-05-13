@@ -165,7 +165,6 @@ export const locations: Location[] = [
     ],
     tips: ['The PR8 trail is moderate difficulty — carry at least 1.5L of water per person','Photograph at golden hour when the red cliffs glow orange against the blue Atlantic','Can be extremely windy — secure bags and loose items before the trail'],
   },
-  {
 
   // ── Hidden Gems ──────────────────────────────────────────
   {
