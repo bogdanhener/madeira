@@ -68,7 +68,7 @@ export const locations: Location[] = [
   },
   {
     id: 'cabo-girao', name: 'Cabo Girão',
-    coordinates: [32.648, -17.0419], category: 'viewpoint',
+    coordinates: [32.66091536155122, -17.004160582951187], category: 'viewpoint',
     duration: '1–2 hours', difficulty: 'easy', pinColor: '#4ECDC4',
     description: "One of Europe's highest sea cliffs at 580 meters, with a glass-floored skywalk that juts over sheer volcanic rock plunging straight into the Atlantic. An unmissable spectacle.",
     attractions: ['Glass-floor skywalk platform','Terraced vineyards visible far below','Fajã dos Padres accessible by cable car','Sunset panoramic viewpoint'],
@@ -85,7 +85,7 @@ export const locations: Location[] = [
   },
   {
     id: 'pico-arieiro', name: 'Pico do Arieiro',
-    coordinates: [32.7352, -16.928], category: 'nature',
+    coordinates: [32.73714217192437, -16.929575958741236], category: 'nature',
     duration: 'Half day', difficulty: 'moderate', pinColor: '#A29BFE',
     description: "Madeira's third-highest peak at 1,818 meters, frequently rising above a billowing sea of clouds. A surreal lunar landscape of jagged basalt ridges and ancient volcanic rock formations.",
     attractions: ['Above-the-clouds hiking at sunrise','PR1 Trail to Pico Ruivo (highest peak)','Dramatic volcanic rock formations','Stargazing above cloud cover at night'],
@@ -99,7 +99,7 @@ export const locations: Location[] = [
   },
   {
     id: 'porto-moniz', name: 'Porto Moniz',
-    coordinates: [32.8637, -17.1664], category: 'beach',
+    coordinates: [32.86887619067881, -17.170573398447896], category: 'beach',
     duration: '2–3 hours', difficulty: 'easy', pinColor: '#00B4D8',
     description: 'Volcanic rock pools on the rugged northwest coast, naturally sculpted by centuries of Atlantic waves into crystalline swimming pools. Surrounded by dramatic lava formations and crashing surf.',
     attractions: ['Natural volcanic rock swimming pools','Aquarium of Madeira','Rugged coastal hiking trails','Lava tube sea caves'],
@@ -116,7 +116,7 @@ export const locations: Location[] = [
   },
   {
     id: 'santana', name: 'Santana',
-    coordinates: [32.8023, -16.8862], category: 'village',
+    coordinates: [32.80586011754176, -16.892195228507294], category: 'village',
     duration: '2–3 hours', difficulty: 'easy', pinColor: '#FD9644',
     description: 'A fairy-tale village famed for its iconic A-frame thatched houses called "palheiros", set against lush valleys and plunging cliffs in northern Madeira.',
     attractions: ['Traditional A-frame palheiro houses','Parque Temático da Madeira','Queimadas Forest Park — mist-shrouded fairy-tale forest','Caldeirão Verde levada trail'],
@@ -133,7 +133,7 @@ export const locations: Location[] = [
   },
   {
     id: 'calheta', name: 'Calheta',
-    coordinates: [32.717, -17.1696], category: 'beach',
+    coordinates: [32.72078202320715, -17.178442674235033], category: 'beach',
     duration: '3–4 hours', difficulty: 'easy', pinColor: '#F7B731',
     description: "Home to Madeira's finest golden sandy beach — imported from Morocco — alongside a modern marina, a world-class art museum, and a historic sugar cane distillery producing authentic poncha.",
     attractions: ['Calheta Beach — imported golden sand','Marina de Calheta','MUDAS Contemporary Art Museum','Engenho da Calheta sugar cane distillery'],
@@ -153,7 +153,7 @@ export const locations: Location[] = [
   },
   {
     id: 'ponta-sao-lourenco', name: 'Ponta de São Lourenço',
-    coordinates: [32.7397, -16.7255], category: 'nature',
+    coordinates: [32.74844117972095, -16.696136958398384], category: 'nature',
     duration: '3–4 hours', difficulty: 'moderate', pinColor: '#E55039',
     description: "A dramatic limestone peninsula thrusting into the Atlantic at Madeira's eastern tip. Rust-red and ochre cliffs plunge sheer into deep blue sea in a landscape unlike anywhere else on the island.",
     attractions: ['PR8 peninsula hiking trail (7.6km)','Baía de Abra starting viewpoint','Endemic flora and migratory birds','Double-sided sea views from the spine'],
@@ -166,27 +166,11 @@ export const locations: Location[] = [
     tips: ['The PR8 trail is moderate difficulty — carry at least 1.5L of water per person','Photograph at golden hour when the red cliffs glow orange against the blue Atlantic','Can be extremely windy — secure bags and loose items before the trail'],
   },
   {
-    id: 'ribeira-brava', name: 'Ribeira Brava',
-    coordinates: [32.6757, -17.064], category: 'village',
-    duration: '1–2 hours', pinColor: '#26de81',
-    description: "A picturesque coastal town where a dramatic gorge meets the sea at a pebble beach. Known for colorful fishing boats, the ornate Church of São Bento, and as the gateway to the island's breathtaking mountain interior.",
-    attractions: ['Church of São Bento — Manueline architecture','Ethnographic Museum of Madeira','Colorful fishing boat harbor','Boca da Encumeada mountain pass — 20 min drive'],
-    food: [
-      { name: 'Restaurante Casa dos Cristais', description: 'Excellent espada fish and regional dishes in a relaxed atmosphere', type: 'Seafood' },
-      { name: 'Taberna da Praia', description: 'Daily fresh catch and house wine right by the pebble beach', type: 'Traditional' },
-    ],
-    nightlife: [{ name: 'Local Tasca Bars', description: 'Authentic Portuguese tascas with home-brewed poncha and live accordion', type: 'Tasca' }],
-    gettingThere: [
-      { mode: 'car', info: '30 min from Funchal via Via Rápida (VR1) west' },
-      { mode: 'bus', info: 'Frequent SAM/Rodoeste buses from Funchal — approx 45 min' },
-    ],
-    tips: ['Try the espada (black scabbardfish with banana) — a true Madeiran delicacy','Drive up to Boca da Encumeada mountain pass for an astonishing dual-ocean viewpoint','The Sunday market has excellent local cheeses, honey, and handmade crafts'],
-  },
 
   // ── Hidden Gems ──────────────────────────────────────────
   {
     id: 'fanal', name: 'Fanal Forest',
-    coordinates: [32.7998, -17.0852], category: 'hidden_gem',
+    coordinates: [32.808898905791885, -17.14405909179506], category: 'hidden_gem',
     duration: '1–2 hours', difficulty: 'easy', pinColor: '#FDCB6E',
     description: 'A hauntingly beautiful ancient laurisilva forest in the Paul da Serra plateau, where thousand-year-old til and laurel trees emerge from dense Atlantic fog. One of the most magical places in all of Madeira — and almost unknown to tourists.',
     attractions: ['Ancient laurisilva forest (UNESCO World Heritage)','Fog-shrouded thousand-year-old til trees','PR13 Levada dos Cedros trail','Endemic Madeiran chaffinch and laurel pigeons'],
@@ -197,7 +181,7 @@ export const locations: Location[] = [
   },
   {
     id: 'ponta-do-pargo', name: 'Ponta do Pargo',
-    coordinates: [32.8161, -17.2623], category: 'hidden_gem',
+    coordinates: [32.814956420525384, -17.262980066198985], category: 'hidden_gem',
     duration: '1–2 hours', difficulty: 'easy', pinColor: '#FDCB6E',
     description: "Madeira's remote westernmost point, marked by a lonely 1922 lighthouse perched above sheer Atlantic cliffs. Almost completely off the tourist trail, with wild flowers, dramatic sea views, and a profound peacefulness found nowhere else on the island.",
     attractions: ['Ponta do Pargo lighthouse (built 1922)','Sheer 300m coastal cliffs','PR18 cliff-top walking trail','Endemic coastal wildflowers and sea birds'],
@@ -206,25 +190,11 @@ export const locations: Location[] = [
     gettingThere: [{ mode: 'car', info: 'Car essential — 1.5 hours from Funchal. The most remote accessible point on the island' }],
     tips: ['Sunset from the lighthouse cliff is among the finest on the entire island — plan around it','Fill up with fuel before heading this far west — petrol stations are scarce','Combine with Calheta and Fanal for an epic full west-coast day trip'],
   },
-  {
-    id: 'boca-do-risco', name: 'Boca do Risco',
-    coordinates: [32.7654, -16.7540], category: 'hidden_gem',
-    duration: '3–4 hours', difficulty: 'hard', pinColor: '#FDCB6E',
-    description: "A dramatic and largely unknown coastal trail east of Machico, rewarding hikers with jaw-dropping views of sheer sea cliffs, hidden coves, and wild Atlantic. Practically invisible on tourist maps — a genuine local secret.",
-    attractions: ['Sheer cliffside trail with unbroken Atlantic panoramas','Hidden sea caves and coves far below','Wild goats grazing on cliff edges','Connection to Ponta de São Lourenço (PR8)'],
-    food: [{ name: 'Restaurants in Machico', description: 'Refuel in Machico after the hike — excellent fresh fish restaurants', type: 'Seafood' }],
-    nightlife: [],
-    gettingThere: [
-      { mode: 'car', info: 'Drive to Porto da Cruz or Machico, park in the village, hike to trailhead' },
-      { mode: 'walk', info: '45 min walk from Porto da Cruz along the old coastal path to the trailhead' },
-    ],
-    tips: ['Do NOT attempt in wet or windy weather — cliff paths become dangerously slippery','Carry 2L+ of water — there are absolutely no facilities along the entire route','Connects to Ponta de São Lourenço for a legendary full-day coastal epic'],
-  },
 
   // ── New pins ─────────────────────────────────────────────
   {
     id: 'botanical-garden', name: 'Botanical Garden',
-    coordinates: [32.6617, -16.8980], category: 'nature',
+    coordinates: [32.675634621088406, -16.90051151904686], category: 'nature',
     duration: '2–3 hours', difficulty: 'easy', pinColor: '#00b894',
     description: 'The Jardim Botânico da Madeira sits on the hillside above Funchal, showcasing over 2,500 exotic and endemic plant species across terraced gardens with sweeping views over the capital and the bay.',
     attractions: ['2,500+ exotic and endemic plant species','Natural History Museum on site','Parrot enclosure and tropical bird aviaries','Panoramic views over Funchal bay'],
@@ -241,7 +211,7 @@ export const locations: Location[] = [
   },
   {
     id: 'seixal-beach', name: 'Seixal Black Sand Beach',
-    coordinates: [32.8190, -17.1030], category: 'beach',
+    coordinates: [32.822464694261264, -17.10310120487722], category: 'beach',
     duration: '2–3 hours', difficulty: 'easy', pinColor: '#636e72',
     description: 'A dramatic black volcanic sand beach on the wild north coast, framed by towering basalt cliffs and a natural freshwater waterfall that tumbles directly onto the shore. One of the most visually striking beaches in all of Portugal.',
     attractions: ['Black volcanic sand unique to the north coast','Natural freshwater waterfall onto the beach','Crystal-clear Atlantic swimming','Dramatic basalt cliff backdrop'],
@@ -257,7 +227,7 @@ export const locations: Location[] = [
   },
   {
     id: 'cascata-anjos', name: 'Cascata dos Anjos',
-    coordinates: [32.8152, -17.0872], category: 'hidden_gem',
+    coordinates: [32.69338486632813, -17.115121394054427], category: 'hidden_gem',
     duration: '30–60 min', difficulty: 'easy', pinColor: '#74b9ff',
     description: "A beautiful roadside waterfall on the north coast near Seixal, where water cascades directly over the coastal road — drivers pass through a curtain of water. A uniquely Madeiran spectacle that surprises every visitor who discovers it.",
     attractions: ['Waterfall that flows directly over the coastal road','Natural pool at the base for cooling off','Scenic north coast backdrop','Photo opportunity unlike anywhere else in Europe'],
@@ -288,7 +258,7 @@ export const locations: Location[] = [
   },
   {
     id: 'pr17-pinaculo', name: 'PR17 Pináculo',
-    coordinates: [32.7530, -17.0390], category: 'nature',
+    coordinates: [32.76096517883961, -17.02032387314783], category: 'nature',
     duration: '3–4 hours', difficulty: 'moderate', pinColor: '#a29bfe',
     description: "A spectacular circular hiking trail in the Serra de Água valley that climbs to the Pináculo — a dramatic volcanic pinnacle with panoramic views over Madeira's central mountain ridge, deep ravines, and the distant Atlantic on both north and south coasts.",
     attractions: ['Pináculo volcanic pinnacle viewpoint','Panoramic dual-coast mountain views','Ancient levada irrigation channels','Endemic laurisilva forest sections'],
@@ -304,7 +274,7 @@ export const locations: Location[] = [
   },
   {
     id: 'veu-da-noiva', name: 'Véu da Noiva',
-    coordinates: [32.8198, -17.1075], category: 'nature',
+    coordinates: [32.81629257346102, -17.09526263556644], category: 'nature',
     duration: '30–60 min', difficulty: 'easy', pinColor: '#74b9ff',
     description: 'The "Bridal Veil" — a spectacular waterfall on the north coast that cascades hundreds of meters down sheer basalt cliffs directly onto the ER101 coastal road. One of the most dramatic and photogenic natural sights in Madeira.',
     attractions: ['Waterfall plunging onto the coastal road','Natural rock pool and mist at the base','Dramatic basalt cliff backdrop','Viewpoint platform on the road'],
@@ -319,18 +289,50 @@ export const locations: Location[] = [
     tips: ['Stop the car and walk right under the waterfall — it is completely safe and magical','Most powerful after heavy rain — the flow multiplies dramatically','Combine with Seixal black sand beach just 2km east for a perfect half-day'],
   },
   {
-    id: 'miradouro-juncal', name: 'Miradouro do Juncal',
-    coordinates: [32.8430, -17.1270], category: 'viewpoint',
-    duration: '30–60 min', difficulty: 'easy', pinColor: '#fd79a8',
-    description: 'A dramatic clifftop viewpoint on the rugged northwest coast with sweeping views over the Atlantic, the terraced valleys of Porto Moniz, and the volcanic coastline stretching east toward Seixal. Often completely deserted — a true hidden viewpoint.',
-    attractions: ['Panoramic Atlantic ocean views','Dramatic northwest coast cliffscape','Terraced valley and vineyard panorama','Peaceful and almost always uncrowded'],
+    id: 'praia-machico', name: 'Praia de Machico',
+    coordinates: [32.71920807621364, -16.762078101650143], category: 'beach',
+    duration: '2–3 hours', difficulty: 'easy', pinColor: '#00B4D8',
+    description: "Machico's sheltered sandy beach nestled in a natural bay, backed by the historic town where Portuguese explorers first landed in Madeira. One of the island's most accessible and charming beach spots.",
+    attractions: ['Sandy beach in a sheltered bay','Historic Machico town centre nearby','Chapel of Senhor dos Milagres','Water sports and boat hire'],
     food: [
-      { name: 'Restaurants in Porto Moniz', description: 'Excellent seafood restaurants by the volcanic pools just 5km away', type: 'Seafood' },
+      { name: 'Restaurants in Machico', description: 'Fresh seafood and local dishes throughout the historic town', type: 'Seafood' },
+    ],
+    nightlife: [{ name: 'Machico Town Bars', description: 'Quiet authentic local bars in the oldest settlement on Madeira', type: 'Local Bars' }],
+    gettingThere: [
+      { mode: 'car', info: '25 min from Funchal via the eastern expressway (VR1)' },
+      { mode: 'bus', info: 'SAM bus services run regularly between Funchal and Machico' },
+    ],
+    tips: ['One of the few natural sand beaches on the island — ideal for families','Explore the historic town centre after the beach','The bay is sheltered from the prevailing winds — good for swimming most of the year'],
+  },
+  {
+    id: 'praia-maiata', name: 'Praia de Maiata',
+    coordinates: [32.771104903765945, -16.82361490730201], category: 'hidden_gem',
+    duration: '2–3 hours', difficulty: 'moderate', pinColor: '#FDCB6E',
+    description: 'A secluded and largely unknown black pebble beach below steep coastal cliffs, reachable only by a short hike. One of the most peaceful and unspoilt spots on the island, rewarding those who seek it out.',
+    attractions: ['Secluded black pebble beach','Crystal-clear Atlantic swimming','Dramatic coastal cliff scenery','Almost always deserted'],
+    food: [
+      { name: 'Bring your own picnic', description: 'No facilities on the beach — pack food and drinks for a perfect picnic', type: 'Picnic' },
     ],
     nightlife: [],
     gettingThere: [
-      { mode: 'car', info: 'Car essential — follow signs from Porto Moniz toward Juncal on the ER101 north coast road' },
+      { mode: 'car', info: 'Park near the trailhead on the north coast road and hike down to the beach' },
+      { mode: 'walk', info: 'Short steep walk down from the road — sturdy footwear recommended' },
     ],
-    tips: ['Visit at sunset for extraordinary golden light over the Atlantic','Almost never appears in guidebooks — you will likely have it entirely to yourself','Combine with Porto Moniz volcanic pools for a perfect northwest coast afternoon'],
+    tips: ['Bring everything you need — there are no facilities at the beach','The steep path down requires care — take your time','Best visited on calm days when the Atlantic is at its most inviting'],
+  },
+  {
+    id: 'levada-cedros', name: 'Levada dos Cedros',
+    coordinates: [32.80100320934365, -17.144428782999867], category: 'nature',
+    duration: '3–4 hours', difficulty: 'moderate', pinColor: '#00b894',
+    description: 'A beautiful levada walk through the ancient laurisilva forest near Fanal, following an old irrigation channel through mist-wrapped cedar and laurel woodland. One of the most atmospheric trails in the UNESCO World Heritage forest.',
+    attractions: ['Ancient laurisilva forest (UNESCO World Heritage)','Historic levada irrigation channel','Endemic Madeiran flora and birdlife','Fog and mist atmosphere in the tree canopy'],
+    food: [
+      { name: 'Estalagem da Encumeada', description: 'Mountain lodge restaurant nearby with hearty regional food', type: 'Mountain Lodge' },
+    ],
+    nightlife: [],
+    gettingThere: [
+      { mode: 'car', info: 'Car essential — 1 hour from Funchal via Paul da Serra plateau (ER110). Road often foggy' },
+    ],
+    tips: ['Wear waterproof layers — it is almost always cold, damp, and misty here','Best in early morning when the fog is thickest and the forest is most magical','Combine with Fanal Forest nearby for a full half-day in the ancient woodland'],
   },
 ];
