@@ -61,6 +61,36 @@ export default function Home() {
 
   const currentUserColor = USERS.find(u => u.name === currentUser)?.color ?? '#4285f4';
 
+  // Start GPS watch for a given user — safe to call any time
+  const startGPS = useCallback((userName: string) => {
+    if (!navigator.geolocation || watchIdRef.current !== null) return;
+    setGpsLoading(true);
+    const id = navigator.geolocation.watchPosition(
+      pos => {
+        setUserPosition([pos.coords.latitude, pos.coords.longitude]);
+        setGpsLoading(false);
+        set(ref(db, `locations/${userName}`), {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          ts:  Date.now(),
+        });
+      },
+      () => setGpsLoading(false),
+      { enableHighAccuracy: true, timeout: 10000 },
+    );
+    watchIdRef.current = id;
+  }, []);
+
+  // Stop GPS and remove from Firebase
+  const stopGPS = useCallback((userName: string | null) => {
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+      watchIdRef.current = null;
+    }
+    setUserPosition(null);
+    if (userName) remove(ref(db, `locations/${userName}`));
+  }, []);
+
   // Listen to all friend positions in Firebase
   useEffect(() => {
     if (!currentUser) return;
@@ -79,7 +109,29 @@ export default function Home() {
     return () => off(locRef);
   }, [currentUser]);
 
-  // Cleanup GPS watch on unmount
+  // Auto-start GPS when user is known (covers returning users whose name is in localStorage)
+  useEffect(() => {
+    if (currentUser) startGPS(currentUser);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]); // intentionally run only when currentUser first becomes truthy
+
+  // Restart GPS watch whenever app comes back to the foreground
+  useEffect(() => {
+    if (!currentUser) return;
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') {
+        if (watchIdRef.current !== null) {
+          navigator.geolocation.clearWatch(watchIdRef.current);
+          watchIdRef.current = null;
+        }
+        startGPS(currentUser);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, [currentUser, startGPS]);
+
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (watchIdRef.current !== null) navigator.geolocation.clearWatch(watchIdRef.current);
@@ -93,7 +145,9 @@ export default function Home() {
     const activeRef = ref(db, `activeUsers/${name}`);
     set(activeRef, true);
     onDisconnect(activeRef).remove();
-  }, []);
+    // Start GPS immediately using the user gesture from tapping the name
+    startGPS(name);
+  }, [startGPS]);
 
   const markVisited = useCallback((id: string) => {
     setVisitedIds(prev => {
@@ -124,38 +178,15 @@ export default function Home() {
     markVisited(location.id);
   }, [markVisited]);
 
+  // GPS button manually toggles sharing on/off
   const handleGPSRequest = useCallback(() => {
     if (!navigator.geolocation) return;
-
-    // Toggle off
     if (watchIdRef.current !== null) {
-      navigator.geolocation.clearWatch(watchIdRef.current);
-      watchIdRef.current = null;
-      setUserPosition(null);
-      if (currentUser) remove(ref(db, `locations/${currentUser}`));
-      return;
+      stopGPS(currentUser);
+    } else {
+      if (currentUser) startGPS(currentUser);
     }
-
-    // Toggle on
-    setGpsLoading(true);
-    const id = navigator.geolocation.watchPosition(
-      pos => {
-        const position: [number, number] = [pos.coords.latitude, pos.coords.longitude];
-        setUserPosition(position);
-        setGpsLoading(false);
-        if (currentUser) {
-          set(ref(db, `locations/${currentUser}`), {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-            ts:  Date.now(),
-          });
-        }
-      },
-      () => setGpsLoading(false),
-      { enableHighAccuracy: true, timeout: 10000 },
-    );
-    watchIdRef.current = id;
-  }, [currentUser]);
+  }, [currentUser, startGPS, stopGPS]);
 
   // Open Google Maps directions to a friend's position
   const handleFriendClick = useCallback((name: string, pos: FriendPosition) => {
@@ -166,16 +197,11 @@ export default function Home() {
   }, [userPosition]);
 
   const handleLogout = useCallback(() => {
-    if (watchIdRef.current !== null) {
-      navigator.geolocation.clearWatch(watchIdRef.current);
-      watchIdRef.current = null;
-      setUserPosition(null);
-      if (currentUser) remove(ref(db, `locations/${currentUser}`));
-    }
+    stopGPS(currentUser);
     if (currentUser) remove(ref(db, `activeUsers/${currentUser}`));
     localStorage.removeItem('madeira-user');
     setCurrentUser(null);
-  }, [currentUser]);
+  }, [currentUser, stopGPS]);
 
   const handleToggleRoute = useCallback(() => {
     setIsRouteMode(prev => !prev);
