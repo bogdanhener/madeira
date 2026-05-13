@@ -2,9 +2,10 @@
 
 import 'leaflet/dist/leaflet.css';
 import { useMemo, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, CircleMarker, ZoomControl, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { Location, locations, MADEIRA_CENTER, DEFAULT_ZOOM } from '@/data/locations';
+import { FriendPosition } from '@/app/page';
 
 function createPinIcon(
   color: string,
@@ -42,6 +43,23 @@ function createPinIcon(
     `,
     iconSize: [outerSize, outerSize],
     iconAnchor: [outerSize / 2, outerSize * 0.78],
+  });
+}
+
+function createUserPin(name: string, color: string): L.DivIcon {
+  return L.divIcon({
+    className: '',
+    html: `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;">
+        <div style="background:rgba(8,10,18,0.88);color:${color};font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;border:1.5px solid ${color}70;white-space:nowrap;backdrop-filter:blur(10px);box-shadow:0 2px 10px rgba(0,0,0,0.5);letter-spacing:0.05em;font-family:system-ui,sans-serif;">${name}</div>
+        <div style="position:relative;width:32px;height:32px;display:flex;align-items:center;justify-content:center;">
+          <div style="position:absolute;width:32px;height:32px;background:${color}25;border-radius:50%;"></div>
+          <div style="width:13px;height:13px;background:${color};border-radius:50%;border:2.5px solid white;box-shadow:0 2px 8px ${color}90;"></div>
+        </div>
+      </div>
+    `,
+    iconSize: [90, 52],
+    iconAnchor: [45, 52],
   });
 }
 
@@ -102,10 +120,14 @@ interface MadeiraMapProps {
   routeIds: string[];
   isRouteMode: boolean;
   userPosition: [number, number] | null;
+  currentUserName: string | null;
+  currentUserColor: string;
+  friendPositions: Record<string, FriendPosition>;
 }
 
 export default function MadeiraMap({
-  onLocationSelect, selectedLocation, visitedIds, routeIds, isRouteMode, userPosition,
+  onLocationSelect, selectedLocation, visitedIds, routeIds, isRouteMode,
+  userPosition, currentUserName, currentUserColor, friendPositions,
 }: MadeiraMapProps) {
   const routeCoords = routeIds
     .map(id => locations.find(l => l.id === id))
@@ -120,7 +142,7 @@ export default function MadeiraMap({
       zoomControl={false}
       attributionControl={true}
     >
-      <ZoomControl position="bottomleft" />
+      <ZoomControlPosition />
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
@@ -149,23 +171,32 @@ export default function MadeiraMap({
         />
       ))}
 
-      {/* User GPS position */}
-      {userPosition && (
-        <>
-          <CircleMarker
-            center={userPosition}
-            radius={18}
-            pathOptions={{ color: '#4285f4', weight: 0, fillColor: '#4285f4', fillOpacity: 0.15 }}
-          />
-          <CircleMarker
-            center={userPosition}
-            radius={8}
-            pathOptions={{ color: '#fff', weight: 3, fillColor: '#4285f4', fillOpacity: 1 }}
-          />
-        </>
+      {/* Current user GPS pin */}
+      {userPosition && currentUserName && (
+        <Marker
+          position={userPosition}
+          icon={createUserPin(currentUserName, currentUserColor)}
+        />
       )}
+
+      {/* Friend GPS pins */}
+      {Object.entries(friendPositions).map(([name, pos]) => (
+        <Marker
+          key={`friend-${name}`}
+          position={[pos.lat, pos.lng]}
+          icon={createUserPin(name, pos.color)}
+        />
+      ))}
 
       <MapController selectedLocation={selectedLocation} userPosition={userPosition} />
     </MapContainer>
   );
+}
+
+function ZoomControlPosition() {
+  const map = useMap();
+  useEffect(() => {
+    L.control.zoom({ position: 'bottomleft' }).addTo(map);
+  }, [map]);
+  return null;
 }

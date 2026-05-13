@@ -1,12 +1,17 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Location } from '@/data/locations';
 import LocationDrawer from '@/components/LocationDrawer';
 import WeatherWidget from '@/components/WeatherWidget';
 import SearchBar from '@/components/SearchBar';
 import MapControls from '@/components/MapControls';
+import NamePicker, { USERS } from '@/components/NamePicker';
+import { db } from '@/lib/firebase';
+import { ref, set, onValue, off, remove } from 'firebase/database';
+
+export type FriendPosition = { lat: number; lng: number; color: string };
 
 const MadeiraMap = dynamic(() => import('@/components/MadeiraMap'), {
   ssr: false,
@@ -38,13 +43,53 @@ function getInitialVisited(): Set<string> {
   } catch { return new Set(); }
 }
 
+function getStoredUser(): string | null {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('madeira-user');
+}
+
 export default function Home() {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
-  const [visitedIds, setVisitedIds] = useState<Set<string>>(getInitialVisited);
-  const [routeIds, setRouteIds] = useState<string[]>([]);
-  const [isRouteMode, setIsRouteMode] = useState(false);
-  const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
-  const [gpsLoading, setGpsLoading] = useState(false);
+  const [visitedIds, setVisitedIds]             = useState<Set<string>>(getInitialVisited);
+  const [routeIds, setRouteIds]                 = useState<string[]>([]);
+  const [isRouteMode, setIsRouteMode]           = useState(false);
+  const [userPosition, setUserPosition]         = useState<[number, number] | null>(null);
+  const [gpsLoading, setGpsLoading]             = useState(false);
+  const [currentUser, setCurrentUser]           = useState<string | null>(getStoredUser);
+  const [friendPositions, setFriendPositions]   = useState<Record<string, FriendPosition>>({});
+  const watchIdRef = useRef<number | null>(null);
+
+  const currentUserColor = USERS.find(u => u.name === currentUser)?.color ?? '#4285f4';
+
+  // Listen to all friend positions in Firebase
+  useEffect(() => {
+    if (!currentUser) return;
+    const locRef = ref(db, 'locations');
+    onValue(locRef, snapshot => {
+      const data = snapshot.val() ?? {};
+      const friends: Record<string, FriendPosition> = {};
+      Object.entries(data).forEach(([name, pos]: [string, any]) => {
+        if (name !== currentUser) {
+          const cfg = USERS.find(u => u.name === name);
+          friends[name] = { lat: pos.lat, lng: pos.lng, color: cfg?.color ?? '#ffffff' };
+        }
+      });
+      setFriendPositions(friends);
+    });
+    return () => off(locRef);
+  }, [currentUser]);
+
+  // Cleanup GPS watch on unmount
+  useEffect(() => {
+    return () => {
+      if (watchIdRef.current !== null) navigator.geolocation.clearWatch(watchIdRef.current);
+    };
+  }, []);
+
+  const handleNameSelect = useCallback((name: string) => {
+    localStorage.setItem('madeira-user', name);
+    setCurrentUser(name);
+  }, []);
 
   const markVisited = useCallback((id: string) => {
     setVisitedIds(prev => {
@@ -69,8 +114,7 @@ export default function Home() {
     }
   }, [isRouteMode, markVisited]);
 
-  const handleClose = useCallback(() => setSelectedLocation(null), []);
-
+  const handleClose        = useCallback(() => setSelectedLocation(null), []);
   const handleSearchSelect = useCallback((location: Location) => {
     setSelectedLocation(location);
     markVisited(location.id);
@@ -78,28 +122,47 @@ export default function Home() {
 
   const handleGPSRequest = useCallback(() => {
     if (!navigator.geolocation) return;
+
+    // Toggle off
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+      watchIdRef.current = null;
+      setUserPosition(null);
+      if (currentUser) remove(ref(db, `locations/${currentUser}`));
+      return;
+    }
+
+    // Toggle on
     setGpsLoading(true);
-    navigator.geolocation.getCurrentPosition(
+    const id = navigator.geolocation.watchPosition(
       pos => {
-        setUserPosition([pos.coords.latitude, pos.coords.longitude]);
+        const position: [number, number] = [pos.coords.latitude, pos.coords.longitude];
+        setUserPosition(position);
         setGpsLoading(false);
+        if (currentUser) {
+          set(ref(db, `locations/${currentUser}`), {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+            ts:  Date.now(),
+          });
+        }
       },
       () => setGpsLoading(false),
-      { enableHighAccuracy: true, timeout: 10000 }
+      { enableHighAccuracy: true, timeout: 10000 },
     );
-  }, []);
+    watchIdRef.current = id;
+  }, [currentUser]);
 
   const handleToggleRoute = useCallback(() => {
     setIsRouteMode(prev => !prev);
     setSelectedLocation(null);
   }, []);
 
-  const handleClearRoute = useCallback(() => {
-    setRouteIds([]);
-  }, []);
+  const handleClearRoute = useCallback(() => setRouteIds([]), []);
 
   return (
     <main className="relative w-screen h-screen overflow-hidden bg-[#080a12]">
+      {!currentUser && <NamePicker onSelect={handleNameSelect} />}
       <MadeiraMap
         onLocationSelect={handleLocationSelect}
         selectedLocation={selectedLocation}
@@ -107,6 +170,9 @@ export default function Home() {
         routeIds={routeIds}
         isRouteMode={isRouteMode}
         userPosition={userPosition}
+        currentUserName={currentUser}
+        currentUserColor={currentUserColor}
+        friendPositions={friendPositions}
       />
       <LocationDrawer location={selectedLocation} onClose={handleClose} />
       <WeatherWidget isModalOpen={!!selectedLocation} />
