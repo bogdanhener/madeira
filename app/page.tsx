@@ -76,7 +76,9 @@ export default function Home() {
         });
       },
       () => setGpsLoading(false),
-      { enableHighAccuracy: true, timeout: 10000 },
+      // Low accuracy to save battery — good enough for "where is everyone" safety use.
+      // maximumAge lets it reuse a recent fix instead of powering the GPS radio every time.
+      { enableHighAccuracy: false, timeout: 15000, maximumAge: 30000 },
     );
     watchIdRef.current = id;
   }, []);
@@ -109,6 +111,28 @@ export default function Home() {
     return () => off(locRef);
   }, [currentUser]);
 
+  // Auto-start GPS when the user is known (covers returning users stored in localStorage)
+  useEffect(() => {
+    if (currentUser) startGPS(currentUser);
+  }, [currentUser, startGPS]);
+
+  // Restart the GPS watch whenever the app comes back to the foreground.
+  // Mobile browsers suspend watchPosition while backgrounded, so this re-arms it on return.
+  useEffect(() => {
+    if (!currentUser) return;
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') {
+        if (watchIdRef.current !== null) {
+          navigator.geolocation.clearWatch(watchIdRef.current);
+          watchIdRef.current = null;
+        }
+        startGPS(currentUser);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, [currentUser, startGPS]);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -123,7 +147,9 @@ export default function Home() {
     const activeRef = ref(db, `activeUsers/${name}`);
     set(activeRef, true);
     onDisconnect(activeRef).remove();
-  }, []);
+    // Start GPS immediately, using the user gesture from tapping the name
+    startGPS(name);
+  }, [startGPS]);
 
   const markVisited = useCallback((id: string) => {
     setVisitedIds(prev => {
