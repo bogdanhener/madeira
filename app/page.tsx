@@ -133,6 +133,35 @@ export default function Home() {
     return () => document.removeEventListener('visibilitychange', onVisible);
   }, [currentUser, startGPS]);
 
+  // Keep the screen awake while a user is active, so GPS keeps broadcasting
+  // instead of the tab suspending on screen sleep. Re-acquire on foreground.
+  useEffect(() => {
+    if (!currentUser) return;
+    const nav = navigator as Navigator & { wakeLock?: { request: (t: 'screen') => Promise<any> } };
+    if (!nav.wakeLock) return;
+    let sentinel: any = null;
+    let cancelled = false;
+
+    const acquire = async () => {
+      if (document.visibilityState !== 'visible' || sentinel) return;
+      try {
+        sentinel = await nav.wakeLock!.request('screen');
+        if (cancelled) { sentinel.release?.(); sentinel = null; return; }
+        sentinel.addEventListener?.('release', () => { sentinel = null; });
+      } catch { /* denied or unsupported — harmless */ }
+    };
+
+    const onVisible = () => { if (document.visibilityState === 'visible') acquire(); };
+    acquire();
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      cancelled = true;
+      document.removeEventListener('visibilitychange', onVisible);
+      sentinel?.release?.();
+      sentinel = null;
+    };
+  }, [currentUser]);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
