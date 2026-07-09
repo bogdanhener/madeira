@@ -1,4 +1,4 @@
-export type LocationCategory = 'city' | 'nature' | 'beach' | 'viewpoint' | 'village' | 'hidden_gem';
+export type LocationCategory = 'city' | 'nature' | 'beach' | 'viewpoint' | 'village' | 'hidden_gem' | 'party';
 export type Difficulty = 'easy' | 'moderate' | 'hard';
 
 export interface FoodRecommendation { name: string; description: string; type: string; }
@@ -29,6 +29,7 @@ export const DEFAULT_ZOOM = 11;
 export const CATEGORY_LABELS: Record<LocationCategory, string> = {
   city: 'City', nature: 'Nature', beach: 'Beach',
   viewpoint: 'Viewpoint', village: 'Village', hidden_gem: 'Hidden Gem',
+  party: 'Party',
 };
 
 export const TRANSPORT_ICONS: Record<TransportMode, string> = {
@@ -333,5 +334,81 @@ export const locations: Location[] = [
       { mode: 'car', info: 'Car essential — 1 hour from Funchal via Paul da Serra plateau (ER110). Road often foggy' },
     ],
     tips: ['Wear waterproof layers — it is almost always cold, damp, and misty here','Best in early morning when the fog is thickest and the forest is most magical','Combine with Fanal Forest nearby for a full half-day in the ancient woodland'],
+  },
+
+  // ── Party ────────────────────────────────────────────────
+  {
+    id: 'pukiki-tiki-bar', name: 'Pukiki Tiki Bar',
+    coordinates: [32.734695, -17.189771], category: 'party',
+    duration: 'Evening', pinColor: '#e84393',
+    description: 'A laid-back tiki bar in Calheta serving tropical cocktails and poncha with an island party vibe — perfect for sunset drinks on the west coast.',
+    attractions: ['Tropical tiki cocktails','Poncha and local spirits','Relaxed island party atmosphere','Sunset drinks by the coast'],
+    food: [],
+    nightlife: [
+      { name: 'Pukiki Tiki Bar', description: 'Tropical cocktails and poncha with a fun tiki party vibe', type: 'Tiki Bar' },
+    ],
+    gettingThere: [
+      { mode: 'car', info: '45 min from Funchal via ER101 or Via Rápida west to Calheta' },
+    ],
+  },
+  {
+    id: 'three-house-bar', name: 'Three House Bar',
+    coordinates: [32.64967, -16.90393], category: 'party',
+    duration: 'Evening', pinColor: '#e84393',
+    description: 'A popular bar near Funchal with a lively crowd, great cocktails, and a buzzing night-out atmosphere.',
+    attractions: ['Lively cocktail bar','Buzzing night-out crowd','Great drinks selection'],
+    food: [],
+    nightlife: [
+      { name: 'Three House Bar', description: 'Lively cocktail bar with a great party crowd', type: 'Cocktail Bar' },
+    ],
+    gettingThere: [
+      { mode: 'car', info: 'Short drive from central Funchal' },
+      { mode: 'taxi', info: 'Uber and licensed taxis available throughout Funchal' },
+    ],
+  },
+  {
+    id: 'purple-fridays', name: 'The Purple Fridays',
+    coordinates: [32.67990398315592, -17.10365602022954], category: 'party',
+    duration: 'Evening', pinColor: '#e84393',
+    description: 'A vibrant Friday-night party spot bringing music, drinks, and a great crowd together for one of the best nights out on the island.',
+    attractions: ['Friday-night parties','Live DJ and music','Great crowd and atmosphere'],
+    food: [],
+    nightlife: [
+      { name: 'The Purple Fridays', description: 'Vibrant Friday-night party with music and a great crowd', type: 'Party Night' },
+    ],
+    gettingThere: [
+      { mode: 'car', info: 'West of Funchal — reachable by car or taxi' },
+      { mode: 'taxi', info: 'Taxi or Uber from central Funchal' },
+    ],
+  },
+  {
+    id: '64-by-loft', name: '64 by Loft',
+    coordinates: [32.647833645671085, -16.913156462559026], category: 'party',
+    duration: 'Evening', pinColor: '#e84393',
+    description: 'A stylish bar and club in Funchal with a modern loft vibe, cocktails, and music that keeps the party going late.',
+    attractions: ['Stylish loft-vibe bar','Cocktails and music','Late-night party atmosphere'],
+    food: [],
+    nightlife: [
+      { name: '64 by Loft', description: 'Stylish loft-vibe bar and club with cocktails and late-night music', type: 'Bar & Club' },
+    ],
+    gettingThere: [
+      { mode: 'car', info: 'In Funchal — short drive from the city centre' },
+      { mode: 'taxi', info: 'Uber and licensed taxis available throughout Funchal' },
+    ],
+  },
+
+  // ── Mirador ──────────────────────────────────────────────
+  {
+    id: 'mirador-sao-cristovao', name: 'Mirador São Cristóvão',
+    coordinates: [32.82696106705081, -16.972907156990765], category: 'nature',
+    duration: '30–60 min', difficulty: 'easy', pinColor: '#00b894',
+    description: 'A peaceful viewpoint in the north of Madeira offering sweeping panoramas over the surrounding valleys and mountains — a lovely quiet stop to take in the island scenery.',
+    attractions: ['Panoramic mountain and valley views','Quiet, uncrowded viewpoint','Great photo spot'],
+    food: [],
+    nightlife: [],
+    gettingThere: [
+      { mode: 'car', info: 'Car recommended — reachable via the northern roads of the island' },
+    ],
+    tips: ['Visit on a clear day for the best panoramic views','A quiet spot — perfect for a peaceful scenic break'],
   },
 ];

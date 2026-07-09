@@ -10,6 +10,7 @@ export const USERS: { name: string; color: string }[] = [
   { name: 'Daria', color: '#A29BFE' },
   { name: 'Nico',  color: '#4ECDC4' },
   { name: 'Mara',  color: '#FDCB6E' },
+  { name: 'Michelle', color: '#00B4D8' },
 ];
 
 interface NamePickerProps {
